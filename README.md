@@ -42,3 +42,5 @@ npm run preview
 This repo was renamed from `mathiaskrois/unbound-site`, retaining its complete history and GitHub Pages settings. The independently extracted website histories have new commit hashes. The original unpublished icon commit is preserved on `archive/local-website-main`; the old DTU worktree branch is preserved on `archive/dtu-worktree`. These branches are historical backups, not publishing sources.
 
 The source repositories own their published branding and assets. Their builds do not depend on the app checkout, downloaded private course materials or browser-local exercise answers.
+
+On macOS, a case-insensitive filesystem cannot hold separate `WordWin/` and `wordwin/` output folders. `npm run preview` serves the legacy route directly from its pinned source, so it cannot overwrite the main app. The Linux GitHub Pages build stages both directories normally. Use this preview command rather than a generic server for the assembled website.
