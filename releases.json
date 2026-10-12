@@ -1,0 +1,14 @@
+{
+  "unbound-web": {
+    "repository": "mathiaskrois/unbound-web",
+    "commit": "d10091ac4bd9588ddaea686fe5a9f88fd22dd0e4"
+  },
+  "WordWin": {
+    "repository": "mathiaskrois/WordWin",
+    "commit": "dde8609c228ea3391a0974e378f45a06d7dcc8e6"
+  },
+  "dtu-courses": {
+    "repository": "mathiaskrois/dtu-courses",
+    "commit": "32ab88aafef0c913f96fd75e66e5ebbe313f7732"
+  }
+}

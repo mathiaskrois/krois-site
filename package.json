@@ -1,14 +1,10 @@
 {
-  "name": "unbound-site",
+  "name": "krois-site",
   "private": true,
+  "type": "module",
   "scripts": {
-    "test": "playwright test",
-    "preview": "python3 -m http.server 8080 --bind 127.0.0.1",
-    "build:dtu": "node scripts/build-dtu.mjs",
-    "test:dtu:dates": "node --test tests/dtu-state.test.mjs"
-  },
-  "devDependencies": {
-    "@axe-core/playwright": "4.13.0",
-    "@playwright/test": "1.63.0"
+    "prepare:sources": "node scripts/prepare-sources.mjs",
+    "build": "node scripts/build-site.mjs",
+    "preview": "python3 -m http.server 8080 --directory dist --bind 127.0.0.1"
   }
 }

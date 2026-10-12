@@ -1,24 +1,15 @@
 name: Deploy GitHub Pages
-
 on:
   push:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      wordwin_ref:
-        description: 'Verified WordWin full commit SHA (blank uses wordwin-release.txt)'
-        required: false
-        type: string
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: false
-
 jobs:
   deploy:
     environment:
@@ -26,58 +17,71 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check out site
+      - name: Check out publisher
         uses: actions/checkout@v4
-      - name: Select WordWin release
-        id: wordwin
-        env:
-          REQUESTED_REF: ${{ inputs.wordwin_ref }}
+      - name: Read recorded releases
+        id: releases
         run: |
-          release_ref="$(cat wordwin-release.txt)"
-          if [ -n "$REQUESTED_REF" ]; then release_ref="$REQUESTED_REF"; fi
-          if ! [[ "$release_ref" =~ ^[a-f0-9]{40}$ ]]; then
-            echo 'WordWin release must be a full commit SHA.'
-            exit 1
-          fi
-          echo "ref=$release_ref" >> "$GITHUB_OUTPUT"
+          node --input-type=module <<'JS'
+          import {appendFileSync} from 'node:fs';
+          import {loadReleases} from './scripts/releases.mjs';
+          const releases=await loadReleases();
+          for (const [key,name] of [['unbound','unbound-web'],['wordwin','WordWin'],['dtu','dtu-courses']]) {
+            appendFileSync(process.env.GITHUB_OUTPUT,`${key}_repo=${releases[name].repository}\n${key}_sha=${releases[name].commit}\n`);
+          }
+          JS
+      - name: Check out Unbound website
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.releases.outputs.unbound_repo }}
+          ref: ${{ steps.releases.outputs.unbound_sha }}
+          path: sources/unbound-web
       - name: Check out WordWin
         uses: actions/checkout@v4
         with:
-          repository: mathiaskrois/WordWin
-          ref: ${{ steps.wordwin.outputs.ref }}
-          path: wordwin-source
+          repository: ${{ steps.releases.outputs.wordwin_repo }}
+          ref: ${{ steps.releases.outputs.wordwin_sha }}
+          path: sources/WordWin
+      - name: Check out DTU course companion
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.releases.outputs.dtu_repo }}
+          ref: ${{ steps.releases.outputs.dtu_sha }}
+          path: sources/dtu-courses
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: wordwin-source/package-lock.json
+          cache-dependency-path: |
+            sources/unbound-web/package-lock.json
+            sources/WordWin/package-lock.json
+            sources/dtu-courses/package-lock.json
+      - name: Build Unbound website
+        working-directory: sources/unbound-web
+        run: |
+          npm ci
+          npm run build
       - name: Verify and build WordWin
-        working-directory: wordwin-source
+        working-directory: sources/WordWin
         run: |
           npm ci
           npm test
           npm run build
-      - name: Build DTU course hub
+      - name: Verify and build DTU companion
+        working-directory: sources/dtu-courses
         run: |
-          node --test tests/dtu-state.test.mjs
-          node scripts/build-dtu.mjs
+          npm ci
+          npm run test:dates
+          npm run build
+      - name: Assemble recorded website releases
+        run: npm run build
       - name: Configure Pages
         uses: actions/configure-pages@v5
-      - name: Stage public website
-        run: |
-          mkdir -p _site
-          cp index.html CNAME _site/
-          cp -R unbound _site/
-          cp -R dtu _site/
-          mkdir -p _site/wordwin
-          cp -R wordwin-source/dist/. _site/wordwin/
-          cp -R wordwin-source/hosting/WordWin _site/WordWin
-          printf '{"commit":"%s"}\n' '${{ steps.wordwin.outputs.ref }}' > _site/wordwin/release.json
-      - name: Upload site
+      - name: Upload public website
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
