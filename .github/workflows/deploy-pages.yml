@@ -64,10 +64,12 @@ jobs:
           npm run build
       - name: Verify and build WordWin
         working-directory: sources/WordWin
+        env:
+          WORDWIN_BOARD_EMAIL_URL: ${{ vars.WORDWIN_BOARD_EMAIL_URL }}
         run: |
           npm ci
           npm test
-          npm run build
+          VITE_BOARD_EMAIL_URL="$WORDWIN_BOARD_EMAIL_URL" npm run build
       - name: Verify and build DTU companion
         working-directory: sources/dtu-courses
         run: |
