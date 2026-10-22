@@ -21,11 +21,11 @@ The root page and domain settings are retained from the original deployment. Wor
 ## Publish or roll back one project
 
 1. Work in that project’s repository and push a source commit.
-2. Wait for its verification workflow and relevant focused checks.
+2. Wait for its verification workflow and relevant focused checks. For unbound-web, CI only builds; its browser tests run locally (`npm test`) before pushing.
 3. Update only that project’s `commit` field in `releases.json` here.
 4. Commit and push this repository. **Deploy GitHub Pages** builds all recorded releases and publishes them together.
 
-To roll back one project, restore its earlier SHA in the manifest. Other release pins stay fixed. Old `wordwin-release.txt` and the manual `wordwin_ref` override are replaced by this single manifest.
+Each mount's `release.json` (for example `https://krois.dk/unbound/release.json`) shows the commit that is live. To roll back one project, restore its earlier SHA in the manifest. Other release pins stay fixed. Old `wordwin-release.txt` and the manual `wordwin_ref` override are replaced by this single manifest.
 
 ## Local assembled preview
 
