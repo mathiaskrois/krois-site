@@ -22,4 +22,4 @@ let caseInsensitive=false;
 try{const lower=await stat(root+'dist/wordwin'),upper=await stat(root+'dist/WordWin');caseInsensitive=lower.ino===upper.ino&&lower.dev===upper.dev;}catch{}
 if(!caseInsensitive)await cp(root+'sources/WordWin/hosting/WordWin',root+'dist/WordWin',{recursive:true});
 else console.log('Case-insensitive filesystem: the local preview serves /WordWin/ from its separate legacy source. Production builds on Linux include both directories.');
-console.log('Built krois.dk: /unbound/, /wordwin/, /dtu/ and legacy /WordWin/.');
+console.log('Built krois.dk: /unbound/, /wordwin/, /dtu/, /ord/ and legacy /WordWin/.');

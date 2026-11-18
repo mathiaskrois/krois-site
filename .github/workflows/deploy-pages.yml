@@ -26,7 +26,7 @@ jobs:
           import {appendFileSync} from 'node:fs';
           import {loadReleases} from './scripts/releases.mjs';
           const releases=await loadReleases();
-          for (const [key,name] of [['unbound','unbound-web'],['wordwin','WordWin'],['dtu','dtu-courses']]) {
+          for (const [key,name] of [['unbound','unbound-web'],['wordwin','WordWin'],['dtu','dtu-courses'],['ord','ord']]) {
             appendFileSync(process.env.GITHUB_OUTPUT,`${key}_repo=${releases[name].repository}\n${key}_sha=${releases[name].commit}\n`);
           }
           JS
@@ -48,6 +48,12 @@ jobs:
           repository: ${{ steps.releases.outputs.dtu_repo }}
           ref: ${{ steps.releases.outputs.dtu_sha }}
           path: sources/dtu-courses
+      - name: Check out Ord
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.releases.outputs.ord_repo }}
+          ref: ${{ steps.releases.outputs.ord_sha }}
+          path: sources/ord
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -57,6 +63,7 @@ jobs:
             sources/unbound-web/package-lock.json
             sources/WordWin/package-lock.json
             sources/dtu-courses/package-lock.json
+            sources/ord/package-lock.json
       - name: Build Unbound website
         working-directory: sources/unbound-web
         run: |
@@ -76,6 +83,14 @@ jobs:
           npm ci
           npm run test:dates
           npm run build
+      - name: Verify and build Ord
+        working-directory: sources/ord
+        run: |
+          npm ci
+          npm test
+          npm run build
+      - name: Verify publisher assembly
+        run: npm test
       - name: Assemble recorded website releases
         run: npm run build
       - name: Configure Pages
