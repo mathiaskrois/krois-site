@@ -71,12 +71,10 @@ jobs:
           npm run build
       - name: Verify and build WordWin
         working-directory: sources/WordWin
-        env:
-          VITE_ACTIVITY_DISABLED: "1"
         run: |
           npm ci
           npm test
-          npm run build
+          VITE_ACTIVITY_DISABLED=1 npm run build
       - name: Verify and build DTU companion
         working-directory: sources/dtu-courses
         run: |
