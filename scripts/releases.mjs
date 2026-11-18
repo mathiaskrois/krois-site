@@ -1,8 +1,8 @@
 import {readFile} from 'node:fs/promises';
-export const mounts={'unbound-web':'unbound','WordWin':'wordwin','dtu-courses':'dtu','ord':'ord'};
+export const mounts={'unbound-web':'unbound','WordWin':'wordwin','dtu-courses':'dtu','games':'games'};
 export async function loadReleases(){
  const data=JSON.parse(await readFile(new URL('../releases.json',import.meta.url),'utf8'));
- if(JSON.stringify(Object.keys(data).sort())!==JSON.stringify(Object.keys(mounts).sort()))throw new Error('Record exactly unbound-web, WordWin, dtu-courses and ord releases.');
+ if(JSON.stringify(Object.keys(data).sort())!==JSON.stringify(Object.keys(mounts).sort()))throw new Error('Record exactly unbound-web, WordWin, dtu-courses and games releases.');
  for(const [name,release] of Object.entries(data)){
   if(release.repository!==`mathiaskrois/${name}`||!/^[a-f0-9]{40}$/.test(release.commit||''))throw new Error(`Invalid repository or full commit SHA for ${name}.`);
  }

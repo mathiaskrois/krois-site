@@ -14,9 +14,9 @@ This repository owns the existing GitHub Pages deployment and `krois.dk` custom 
 
 ## Release contract
 
-`releases.json` records a full verified commit SHA for each project. Every project’s `npm run build` emits only public files into `dist/`. This publisher places Unbound at `/unbound/`, WordWin at `/wordwin/`, DTU at `/dtu/`, and the independent Ord game at `/ord/`. `/WordWin/` retains the existing legacy migration route. Each current lowercase mount has a `release.json` showing its source repository and deployed commit.
+`releases.json` records a full verified commit SHA for each project. Every project’s `npm run build` emits only public files into `dist/`. This publisher places Unbound at `/unbound/`, WordWin at `/wordwin/`, DTU at `/dtu/`, and Krois Games at `/games/`. `/WordWin/` retains the existing legacy migration route. Each current lowercase mount has a `release.json` showing its source repository and deployed commit.
 
-The root page and domain settings are retained from the original deployment. WordWin’s service worker remains confined to `/wordwin/`; Ord has its own worker confined to `/ord/`. Ord source lives in `mathiaskrois/ord`, alongside the sibling local `ord/` development repository. The publishing workflow does not build or deploy the independent Unbound app.
+The root page and domain settings are retained from the original deployment. WordWin’s service worker remains confined to `/wordwin/`; Krois Games uses a worker confined to `/games/`. The `/ord/` compatibility page redirects to `/games/ord/` and retires the old worker. Games source lives in `mathiaskrois/games`, alongside the sibling local `games/` development repository. The publishing workflow does not build or deploy the independent Unbound app.
 
 ## Publish or roll back one project
 

@@ -1,6 +1,6 @@
 # Repository map
 
-This is only the krois.dk publisher. Website edits belong in the sibling unbound-web, WordWin, dtu-courses and ord repositories. The independent app at Git/Unbound must not be moved or modified as part of website work.
+This is only the krois.dk publisher. Website edits belong in the sibling unbound-web, WordWin, dtu-courses and games repositories. The independent app at Git/Unbound must not be moved or modified as part of website work.
 
 - Check status and preserve local work.
 - releases.json is the single record of deployed source SHAs. Update only the requested project pin.

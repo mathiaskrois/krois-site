@@ -18,8 +18,9 @@ for(const [name,release] of Object.entries(releases)){
  await cp(root+'sources/'+name+'/dist',root+'dist/'+mount,{recursive:true});
  await writeFile(root+'dist/'+mount+'/release.json',JSON.stringify(release)+'\n');
 }
+await cp(root+'sources/games/hosting/ord',root+'dist/ord',{recursive:true});
 let caseInsensitive=false;
 try{const lower=await stat(root+'dist/wordwin'),upper=await stat(root+'dist/WordWin');caseInsensitive=lower.ino===upper.ino&&lower.dev===upper.dev;}catch{}
 if(!caseInsensitive)await cp(root+'sources/WordWin/hosting/WordWin',root+'dist/WordWin',{recursive:true});
 else console.log('Case-insensitive filesystem: the local preview serves /WordWin/ from its separate legacy source. Production builds on Linux include both directories.');
-console.log('Built krois.dk: /unbound/, /wordwin/, /dtu/, /ord/ and legacy /WordWin/.');
+console.log('Built krois.dk: /unbound/, /wordwin/, /dtu/, /games/, /ord/ redirect and legacy /WordWin/.');

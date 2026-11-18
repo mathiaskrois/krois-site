@@ -11,8 +11,8 @@
     "repository": "mathiaskrois/dtu-courses",
     "commit": "d7deaa28130001546909df6f535020d204cc1ad5"
   },
-  "ord": {
-    "repository": "mathiaskrois/ord",
-    "commit": "8517361388fb0e385ca329cc878668c353fff374"
+  "games": {
+    "repository": "mathiaskrois/games",
+    "commit": "ae709f71d4fd94637489ff3fcdc663f226d7b9f8"
   }
 }
