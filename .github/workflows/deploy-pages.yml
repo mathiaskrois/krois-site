@@ -72,11 +72,11 @@ jobs:
       - name: Verify and build WordWin
         working-directory: sources/WordWin
         env:
-          WORDWIN_BOARD_EMAIL_URL: ${{ vars.WORDWIN_BOARD_EMAIL_URL }}
+          VITE_ACTIVITY_DISABLED: "1"
         run: |
           npm ci
           npm test
-          VITE_BOARD_EMAIL_URL="$WORDWIN_BOARD_EMAIL_URL" npm run build
+          npm run build
       - name: Verify and build DTU companion
         working-directory: sources/dtu-courses
         run: |
